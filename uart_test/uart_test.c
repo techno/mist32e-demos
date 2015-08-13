@@ -4,9 +4,22 @@
 
 #define N_VALUES 1024
 
-unsigned int values[N_VALUES];
+#define HARD_RAND
 
-uint32_t xor128(void) {
+#ifdef HARD_RAND
+#define rand() (hard_rand())
+
+uint32_t hard_rand(void)
+{
+  static uint32_t y = 2463534242;
+  asm volatile("rand %0, %1" : "=r"(y) : "r"(y));
+  return y;
+}
+#else
+#define rand() (xorshift())
+
+uint32_t xorshift(void)
+{
   static uint32_t x = 123456789;
   static uint32_t y = 362436069;
   static uint32_t z = 521288629;
@@ -17,6 +30,7 @@ uint32_t xor128(void) {
   x = y; y = z; z = w;
   return w = (w ^ (w >> 19)) ^ (t ^ (t >> 8));
 }
+#endif
 
 void q_sort(unsigned int numbers[], int left, int right)
 {
@@ -58,13 +72,14 @@ void q_sort(unsigned int numbers[], int left, int right)
 int main(void)
 {
   unsigned int i;
+  unsigned int values[N_VALUES];
 
   display_clear(DISPLAY_COLOR_BLACK);
   uart_init();
   display_clear(DISPLAY_COLOR_WHITE);
 
   for(i = 0; i < N_VALUES; i++) {
-    values[i] = xor128();
+    values[i] = rand();
     uart_put_uint(values[i]);
   }
 

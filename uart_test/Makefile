@@ -1,5 +1,5 @@
 CC	= mist32-elf-gcc
-CFLAGS	= -nostdlib -ffreestanding -std=gnu11 -O0 -Wall -I include-freestanding-c99
+CFLAGS	= -nostdlib -ffreestanding -std=gnu11 -O3 -Wall -I include-freestanding-c99
 
 LIBDIR	= ../lib
 STDLIBDIR	= ../stdlib

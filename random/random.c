@@ -1,9 +1,25 @@
 #include <stdint.h>
 #include <display.h>
+#include <uart.h>
 
 unsigned short pixels[256][256];
 
-uint32_t xor128(void) {
+#define HARD_RAND
+
+#ifdef HARD_RAND
+#define rand() (hard_rand())
+
+uint32_t hard_rand(void)
+{
+  static uint32_t y = 2463534242;
+  asm volatile("rand %0, %1" : "=r"(y) : "r"(y));
+  return y;
+}
+#else
+#define rand() (xorshift())
+
+uint32_t xorshift(void)
+{
   static uint32_t x = 123456789;
   static uint32_t y = 362436069;
   static uint32_t z = 521288629;
@@ -14,6 +30,7 @@ uint32_t xor128(void) {
   x = y; y = z; z = w;
   return w = (w ^ (w >> 19)) ^ (t ^ (t >> 8));
 }
+#endif
 
 int main(void)
 {
@@ -28,10 +45,10 @@ int main(void)
   }
   
   while(1) {
-    x = xor128() & 0xff;
-    y = xor128() % 0xff;
+    x = rand() & 0xff;
+    y = rand() % 0xff;
 
-    pixels[x][y] |= (1 << (xor128() & 0xf));
+    pixels[x][y] |= (1 << (rand() & 0xf));
     display_set_pixel(x + 100, y + 100, pixels[x][y]);
   }
 

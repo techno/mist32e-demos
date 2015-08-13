@@ -3,8 +3,8 @@ CFLAGS	= -nostdlib -ffreestanding -std=gnu11 -O3 -Wall -I include-freestanding-c
 
 LIBDIR	= ../lib
 STDLIBDIR	= ../stdlib
-LIBSRC	= $(LIBDIR)/display.c
-LIBHEAD	= $(LIBDIR)/display.h
+LIBSRC	= $(LIBDIR)/display.c $(LIBDIR)/uart.c
+LIBHEAD	= $(LIBDIR)/display.h $(LIBDIR)/uart.h
 
 SRC	= random.c
 ELF	= random.elf
