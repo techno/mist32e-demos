@@ -1,0 +1,7 @@
+cc_dry2
+cc_dry2reg
+gcc_dry2
+gcc_dry2reg
+results
+
+*.o
