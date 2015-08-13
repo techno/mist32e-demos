@@ -2,12 +2,12 @@
 
 void uart_init(void)
 {
-  *(unsigned int *)OFFSET(DEVICE_SCI_START, SCI_CFG) = SCI_TEN | SCI_REN;
+  *(volatile unsigned int *)OFFSET(DEVICE_SCI_START, SCI_CFG) = SCI_TEN | SCI_REN;
 }
 
 void uart_putc(int c)
 {
-  *(unsigned int *)OFFSET(DEVICE_SCI_START, SCI_TXD) = c;
+  *(volatile unsigned int *)OFFSET(DEVICE_SCI_START, SCI_TXD) = c;
 }
 
 void uart_puts(char *str)
