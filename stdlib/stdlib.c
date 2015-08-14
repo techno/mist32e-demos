@@ -52,3 +52,11 @@ int strcmp( char* one, char* another )
       return 0;
   return *one - *another;
 }
+
+void *memset(void *s, int c, size_t n)
+{
+  unsigned char* p=s;
+  while(n--)
+    *p++ = (unsigned char)c;
+  return s;
+}
